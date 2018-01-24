@@ -204,15 +204,18 @@ describe('groupBy', function(){
 			//}
 			var result = {};
 			for(var index = 0, count = products.length; index < count; index++){
+
 				var product = products[index];
-				//if (product.category === 'stationary')
+				var key = product.category;
+
+				//if (key === 'stationary')
 				//	result.stationary.push(product);
-				//if (product.category === 'grocery')
+				//if (key === 'grocery')
 				//	result.grocery.push(product);
-				//if(product.category === 'utencil')
+				//if(key === 'utencil')
 				//	result.utencil.push(product);
 
-				var key = product.category;
+				
 				if (typeof result[key] === 'undefined')
 					result[key] = [];
 				result[key].push(product);
@@ -223,6 +226,13 @@ describe('groupBy', function(){
 		console.log(productsByCategory);
 	})*/
 
+	function printGroup(groupedObj){
+		for(var key in groupedObj){
+			describe('Key - (' + key + ')', function(){
+				console.table(groupedObj[key]);
+			});
+		}
+	}
 	function groupBy(list, keySelector){
 		var result = {};
 		for(var index = 0, count = list.length; index < count; index++){
@@ -240,13 +250,13 @@ describe('groupBy', function(){
 			return product.category;
 		};
 		var productsByCategory = groupBy(products, categoryKeySelector);
-		console.log(productsByCategory);
+		printGroup(productsByCategory);
 	});
 	describe('Products by cost', function(){
 		var costKeySelector = function(product){
 			return product.cost > 50 ? 'costly' : 'affordable';
 		};
 		var productsByCost = groupBy(products, costKeySelector);
-		console.log(productsByCost);
+		printGroup(productsByCost);
 	});
 });
