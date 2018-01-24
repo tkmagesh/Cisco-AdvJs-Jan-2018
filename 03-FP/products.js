@@ -195,22 +195,23 @@ describe('filter', function(){
 });
 
 describe('groupBy', function(){
-	describe('products by category', function(){
+	/*describe('products by category', function(){
 		function groupProductsByCategory(){
-			/*var result = {
-				stationary : [],
-				grocery : [],
-				utencil :[]
-			}*/
+			//var result = {
+			//	stationary : [],
+			//	grocery : [],
+			//	utencil :[]
+			//}
 			var result = {};
 			for(var index = 0, count = products.length; index < count; index++){
 				var product = products[index];
-				/*if (product.category === 'stationary')
-					result.stationary.push(product);
-				if (product.category === 'grocery')
-					result.grocery.push(product);
-				if(product.category === 'utencil')
-					result.utencil.push(product);*/
+				//if (product.category === 'stationary')
+				//	result.stationary.push(product);
+				//if (product.category === 'grocery')
+				//	result.grocery.push(product);
+				//if(product.category === 'utencil')
+				//	result.utencil.push(product);
+
 				var key = product.category;
 				if (typeof result[key] === 'undefined')
 					result[key] = [];
@@ -220,5 +221,32 @@ describe('groupBy', function(){
 		}
 		var productsByCategory = groupProductsByCategory();
 		console.log(productsByCategory);
-	})
-})
+	})*/
+
+	function groupBy(list, keySelector){
+		var result = {};
+		for(var index = 0, count = list.length; index < count; index++){
+			var item = list[index],
+				key = keySelector(item);
+			/*if (typeof result[key] === 'undefined')
+				result[key] = [];*/
+			result[key] = result[key] || [];
+			result[key].push(item);
+		}
+		return result;
+	}
+	describe('Products by category ', function(){
+		var categoryKeySelector = function(product){
+			return product.category;
+		};
+		var productsByCategory = groupBy(products, categoryKeySelector);
+		console.log(productsByCategory);
+	});
+	describe('Products by cost', function(){
+		var costKeySelector = function(product){
+			return product.cost > 50 ? 'costly' : 'affordable';
+		};
+		var productsByCost = groupBy(products, costKeySelector);
+		console.log(productsByCost);
+	});
+});
