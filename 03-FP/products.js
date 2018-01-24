@@ -6,6 +6,7 @@ var products = [
 	{id : 1, name : 'Ken', cost : 20, units : 80, category : 'utencil'},
 ];
 
+
 //sort
 //filter
 //groupBy
@@ -91,15 +92,25 @@ describe('Sort', function(){
 					}
 				}
 		}
+		function getDescendingComparer(comparerFn){
+			return function(){
+				return comparerFn.apply(undefined, arguments) * -1;
+			}
+		}
+		var productComparerByValue = function productComparerByValue(p1, p2){
+			var p1Value = p1.cost * p1.units,
+				p2Value = p2.cost * p2.units;
+			if (p1Value < p2Value) return -1;
+			if (p1Value === p2Value) return 0;
+			return 1;
+		};
+		var productComparerByValueDescending = getDescendingComparer(productComparerByValue);
 		describe('Products by value [cost * units]', function(){
-			var productComparerByValue = function productComparerByValue(p1, p2){
-				var p1Value = p1.cost * p1.units,
-					p2Value = p2.cost * p2.units;
-				if (p1Value < p2Value) return -1;
-				if (p1Value === p2Value) return 0;
-				return 1;
-			};
 			sort(products, productComparerByValue);
+			console.table(products);
+		});
+		describe('Products by value [cost * units] descending', function(){
+			sort(products, productComparerByValueDescending);
 			console.table(products);
 		});
 	});
@@ -182,3 +193,32 @@ describe('filter', function(){
 		});
 	});
 });
+
+describe('groupBy', function(){
+	describe('products by category', function(){
+		function groupProductsByCategory(){
+			/*var result = {
+				stationary : [],
+				grocery : [],
+				utencil :[]
+			}*/
+			var result = {};
+			for(var index = 0, count = products.length; index < count; index++){
+				var product = products[index];
+				/*if (product.category === 'stationary')
+					result.stationary.push(product);
+				if (product.category === 'grocery')
+					result.grocery.push(product);
+				if(product.category === 'utencil')
+					result.utencil.push(product);*/
+				var key = product.category;
+				if (typeof result[key] === 'undefined')
+					result[key] = [];
+				result[key].push(product);
+			}
+			return result;
+		}
+		var productsByCategory = groupProductsByCategory();
+		console.log(productsByCategory);
+	})
+})
