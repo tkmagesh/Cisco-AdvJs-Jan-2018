@@ -1,11 +1,11 @@
-function memoize(process){
+function memoize(processFn){
 	var cache = {};
 
 	return function (n){
 		if (typeof cache[n] !== 'undefined')
 			return cache[n];
 		console.log('processing ', n);
-		cache[n] = process(n);
+		cache[n] = processFn(n);
 		return cache[n];
 	}
 }

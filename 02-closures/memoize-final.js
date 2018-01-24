@@ -1,9 +1,9 @@
-function memoize(process){
+function memoize(processFn){
 	var cache = {};
 	return function (/*arguments*/){
 		var key = JSON.stringify(arguments);
 		if (typeof cache[key] === 'undefined')
-			cache[key] = process.apply(undefined, arguments);
+			cache[key] = processFn.apply(undefined, arguments);
 		return cache[key];
 	}
 }
