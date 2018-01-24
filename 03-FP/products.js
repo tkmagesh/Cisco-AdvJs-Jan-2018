@@ -127,35 +127,55 @@ describe('filter', function(){
 			}
 			return result;
 		}
+		function negate(criteriaFn){
+			return function negatedCriteria(/*arguemnts*/){
+				return !criteriaFn.apply(undefined, arguments);
+			}
+		}
 		describe('Filter by cost', function(){
+			var costlyProductCriteria = function(product){
+				return product.cost > 50;
+			};
+			/*var affordableProductCriteria = function(product){
+				return !costlyProductCriteria(product);
+			};*/
+			var affordableProductCriteria = negate(costlyProductCriteria);
+
 			describe('costly products [cost > 50]', function(){
-				var costlyProductCriteria = function(product){
+				/*var costlyProductCriteria = function(product){
 					return product.cost > 50;
-				};
+				};*/
 				var costlyProducts = filter(products, costlyProductCriteria);
 				console.table(costlyProducts);
 			});
 			describe('affordable products [cost <= 50]', function(){
-				var affordableProductCriteria = function(product){
+				/*var affordableProductCriteria = function(product){
 					return product.cost <= 50;
-				};
+				};*/
 				var affordableProducts = filter(products, affordableProductCriteria);
 				console.table(affordableProducts);
 			});
 		});
 
 		describe('Filter by units', function(){
+			var understockedProductCriteria = function(product){
+				return product.units < 60;
+			};
+			/*var wellstockedProductCriteria = function(product){
+				return !understockedProductCriteria(product);
+			};*/
+			var wellstockedProductCriteria = negate(understockedProductCriteria);
 			describe('understocked products [units < 60]', function(){
-				var understockedProductCriteria = function(product){
+				/*var understockedProductCriteria = function(product){
 					return product.units < 60;
-				};
+				};*/
 				var understockedProducts = filter(products, understockedProductCriteria);
 				console.table(understockedProducts);
 			});
 			describe('wellstocked products [units >= 60]', function(){
-				var wellstockedProductCriteria = function(product){
+				/*var wellstockedProductCriteria = function(product){
 					return product.units >= 60;
-				};
+				};*/
 				var wellstockedProducts = filter(products, wellstockedProductCriteria);
 				console.table(wellstockedProducts);
 			});
