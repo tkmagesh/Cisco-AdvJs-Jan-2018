@@ -78,4 +78,29 @@ describe('Sort', function(){
 			console.table(products);
 		});
 	});
+
+	describe('Sort any list by any comparison', function(){
+		function sort(list, comparerFn){
+			for(var i=0; i < list.length-1; i++)
+				for(var j = i+1; j < list.length; j++){
+					var compareResult = comparerFn(list[i], list[j]);
+					if (compareResult > 0){
+						var temp = list[i];
+						list[i] = list[j];
+						list[j] = temp;
+					}
+				}
+		}
+		describe('Products by value [cost * units]', function(){
+			var productComparerByValue = function productComparerByValue(p1, p2){
+				var p1Value = p1.cost * p1.units,
+					p2Value = p2.cost * p2.units;
+				if (p1Value < p2Value) return -1;
+				if (p1Value === p2Value) return 0;
+				return 1;
+			};
+			sort(products, productComparerByValue);
+			console.table(products);
+		});
+	});
 });
